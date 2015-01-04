@@ -4,36 +4,49 @@
 
 //--------------------------------------------------------------
 void ofApp::setup(){
+    // TODO: Check if these options are required, or can be removed
     ofSetLineWidth(0);
     ofEnableSmoothing();
     ofSetFrameRate(30);
     
-    numberOfClones = 90;
-    diameter = 650.0;
+    // Setup the UI elements: args = name, default, min, max
+    gui.setup();
+    gui.add(rotationSpeed.setup( "Rotation speed", 0.2, -1, 1));
+    gui.add(numberOfClones.setup( "Number of clones", 90, 2, 120));
+    gui.add(diameter.setup( "Diameter", 650.0, 50.0, 1000.0));
+    // TODO: Find way to specify ofColor directly, as you can only pass one colour value as the default for the colour slider. I.e. set the default colours to be non-grey.
+    gui.add(colorOne.setup( "Background colour 1", 50, 0, 255));
+    gui.add(colorTwo.setup( "Background colour 2", 100, 0, 255));
+
+    // TODO: Add interface element to control the x and y offset of the foreground wheel
+    //TODO: Add save function for good parameter mixes, so they can be reused as presets
     
+    // TODO: Find a way to update the diameter and numberOfClones without moving it out of the setup function. As it is now, you can't change the diameter or numberOfClones because they're called in the setup function for efficiency of not having to call the function on each draw
     // Pre-generate a pie
-    pie = generatePieMesh( diameter, numberOfClones );
+    //This is where the pie generation originally took place
     
 }
 
 //--------------------------------------------------------------
 void ofApp::update(){
     //Rotation speed of the foreground wheel
-    rotationSpeed += 0.25;
+    pie = generatePieMesh( diameter, numberOfClones );
+    rotationAngle += rotationSpeed;
     
 }
 
 //--------------------------------------------------------------
 void ofApp::draw(){
     
-    ofColor colorOne;
-    ofColor colorTwo;
+//    ofColor colorOne;
+//    ofColor colorTwo;
     
-    colorOne.set (255, 75, 0);
-    colorTwo.set (0, 200, 200);
+//    colorOne.set (255, 75, 0);
+//    colorTwo.set (0, 200, 200);
     
     // Sets the background to a circular gradient
     ofBackgroundGradient(colorOne, colorTwo, OF_GRADIENT_CIRCULAR);
+    
     
     //draw the background wheel
     
@@ -58,7 +71,7 @@ void ofApp::draw(){
     
     glPushMatrix(); // Foreground wheel matrix
     glTranslatef(ofGetWindowWidth()/2 + 10, ofGetWindowHeight()/2 + 10, 0);
-    glRotatef(rotationSpeed, 0, 0, 1);
+    glRotatef(rotationAngle, 0, 0, 1);
     
     // Draw the foreground wheel
     ofPushStyle();
@@ -77,10 +90,13 @@ void ofApp::draw(){
     //Display a black circle on top to mask the centre of the screen where
     //we get some visual artifacts
     //    ofCircle(ofGetWindowWidth()/2, ofGetWindowHeight()/2, 25);
+
     
-    //Print fps at top left of window
-    ofDrawBitmapString(ofToString(ofGetFrameRate())+"fps", 10, 15);
+    //Print fps at top right of window
+    ofDrawBitmapString(ofToString(ofGetFrameRate())+"fps", ofGetWindowWidth()-100, 15);
     
+    // Draw the GUI
+    gui.draw();
 }
 
 
