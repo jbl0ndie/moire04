@@ -1,12 +1,10 @@
 #include "ofApp.h"
 #include "generatePieMesh.h"
 
+//TODO: Find and fix this error: [warning] ofMath: ofMap(): avoiding possible divide by zero, check inputMin and inputMax: 255 255
 
 //--------------------------------------------------------------
 void ofApp::setup(){
-    // TODO: Check if these options are required, or can be removed
-    ofSetLineWidth(0);
-    ofEnableSmoothing();
     ofSetFrameRate(30);
     
     // Setup the UI elements: args = name, default, min, max
@@ -17,13 +15,14 @@ void ofApp::setup(){
     // TODO: Find way to specify ofColor directly, as you can only pass one colour value as the default for the colour slider. I.e. set the default colours to be non-grey.
     gui.add(colorOne.setup( "Background colour 1", 50, 0, 255));
     gui.add(colorTwo.setup( "Background colour 2", 100, 0, 255));
+    gui.add(randomColour.setup( "Random colour" ));
 
     // TODO: Add interface element to control the x and y offset of the foreground wheel
     //TODO: Add save function for good parameter mixes, so they can be reused as presets
     
     // TODO: Find a way to update the diameter and numberOfClones without moving it out of the setup function. As it is now, you can't change the diameter or numberOfClones because they're called in the setup function for efficiency of not having to call the function on each draw
     // Pre-generate a pie
-    //This is where the pie generation originally took place
+    //This is where the pie generation originally took place before it was moved to update
     
 }
 
@@ -44,8 +43,14 @@ void ofApp::draw(){
 //    colorOne.set (255, 75, 0);
 //    colorTwo.set (0, 200, 200);
     
-    // Sets the background to a circular gradient
-    ofBackgroundGradient(colorOne, colorTwo, OF_GRADIENT_CIRCULAR);
+    // TODO: Fix the random colours
+    // Sets the background to a circular gradient & implements random colours
+    if (randomColour == true) {
+        ofBackgroundGradient((ofColor(0, 200, 200)), ofColor((200, 0, 0)), OF_GRADIENT_CIRCULAR);
+    }
+    else {
+        ofBackgroundGradient(colorOne, colorTwo, OF_GRADIENT_CIRCULAR);
+    }
     
     
     //draw the background wheel
@@ -68,7 +73,6 @@ void ofApp::draw(){
     // Rotate the foreground wheel matrix
     
     // Change the origin to the centre so rotation occurs around the middle
-    
     glPushMatrix(); // Foreground wheel matrix
     glTranslatef(ofGetWindowWidth()/2 + 10, ofGetWindowHeight()/2 + 10, 0);
     glRotatef(rotationAngle, 0, 0, 1);

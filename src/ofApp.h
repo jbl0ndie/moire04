@@ -30,5 +30,6 @@ public:
     ofxPanel gui;
     ofxFloatSlider rotationSpeed, numberOfClones, diameter;
     ofxColorSlider colorOne, colorTwo;
+    ofxToggle randomColour;
     
 };
