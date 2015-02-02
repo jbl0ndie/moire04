@@ -28,6 +28,5 @@ example-output/obj
 # svn
 .svn/
 obj/
-bin/
 build/
 !data/

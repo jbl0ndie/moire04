@@ -24,12 +24,15 @@ public:
 //    float rotationSpeed;
 //    float diameter;
     float rotationAngle;
-
-    
+    ofShader shader;
+        
     ofMesh pie;
     ofxPanel gui;
     ofxFloatSlider rotationSpeed, numberOfClones, diameter;
     ofxColorSlider colorOne, colorTwo;
-    ofxToggle randomColour;
-    
+    ofxToggle enableShader;
+    ofxFloatSlider faderxPosition, faderyPosition;
+    ofxFloatSlider shaderColor1;
+    ofxFloatSlider shaderColor2;
+    ofxFloatSlider shaderColor3;
 };
