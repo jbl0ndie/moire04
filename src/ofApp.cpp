@@ -16,8 +16,8 @@ void ofApp::setup(){
     gui.add(diameter.setup( "Diameter", 650.0, 50.0, 1000.0));
     // TODO: Find way to specify ofColor directly, as you can only pass one colour value as the default for the colour slider. I.e. set the default colours to be non-grey.
     //TODO: Find and fix this error: [warning] ofMath: ofMap(): avoiding possible divide by zero, check inputMin and inputMax: 255 255. It comes from the following two lines. If you comment them out, it stops complaining about this error. Changing the min/max values doesn't seem to fix it though.
-    gui.add(colorOne.setup( "Background colour 1", 50, 0, 255));
-    gui.add(colorTwo.setup( "Background colour 2", 100, 0, 255));
+//    gui.add(colorOne.setup( "Background colour 1", 50, 0, 255));
+//    gui.add(colorTwo.setup( "Background colour 2", 100, 0, 255));
     gui.add(enableShader.setup( "Enable shader" ));
     // Add interface element to control the x and y offset of the foreground wheel
     gui.add(faderxPosition.setup( "Wheel X-position", 10, 0, 20));
@@ -56,19 +56,19 @@ void ofApp::draw(){
     // TODO: Fix the random colours
     // Sets the background to a circular gradient & implements random colours
     // Adds optional shader for background (doesn't work yet)
-    if (enableShader == true) {
-        ofBackgroundGradient((ofColor(0, 200, 200)), ofColor((200, 0, 0)), OF_GRADIENT_CIRCULAR);
-    }
-    else {
+    if (enableShader == TRUE) {
         //        ofBackgroundGradient(colorOne, colorTwo, OF_GRADIENT_CIRCULAR);
         ofSetColor(colorOne); // This is where the fragment shader's globalColor is defined
         shader.begin();
-            ofRect(0, 0, ofGetWidth(), ofGetHeight());
+        ofRect(0, 0, ofGetWidth(), ofGetHeight());
         // TODO: this is broken
-            shader.setUniform1f("shaderColor1", shaderColor1);
-            shader.setUniform1f("shaderColor2", shaderColor2);
-            shader.setUniform1f("shaderColor3", shaderColor3);
+        shader.setUniform1f("shaderColor1", shaderColor1);
+        shader.setUniform1f("shaderColor2", shaderColor2);
+        shader.setUniform1f("shaderColor3", shaderColor3);
         shader.end();
+    }
+    else {
+        ofBackgroundGradient((ofColor(0, 200, 200)), ofColor((200, 0, 0)), OF_GRADIENT_CIRCULAR);
     }
     
     
